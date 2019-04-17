@@ -4,9 +4,11 @@ import {
   addExpense,
   removeExpense,
   editExpense,
-  startAddExpense,
   setExpenses,
-  startSetExpenses
+  startAddExpense,
+  startSetExpenses,
+  startRemoveExpense,
+  startEditExpense
 } from "../../actions/expenses";
 import expenses from "../fixtures/expenses";
 import database from "../../firebase/firebase";
@@ -32,6 +34,25 @@ test("should setup remove expense action object", () => {
   });
 });
 
+test("should remove expense from firebase", done => {
+  const store = createMockStore({});
+  const id = expenses[1].id;
+  store
+    .dispatch(startRemoveExpense({ id }))
+    .then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: "REMOVE_EXPENSE",
+        id
+      });
+      return database.ref(`expenses/${id}`).once("value");
+    })
+    .then(snapshot => {
+      expect(snapshot.val()).toBeFalsy();
+      done();
+    });
+});
+
 test("should setup edit expense action object", () => {
   const action = editExpense("abc123", {
     description: "new update",
@@ -45,6 +66,27 @@ test("should setup edit expense action object", () => {
       money: 100
     }
   });
+});
+
+test("should edit expense from firebase", done => {
+  const store = createMockStore({});
+  const id = expenses[1].id;
+  const update = { amount: 89.67 };
+  store
+    .dispatch(startEditExpense(id, update))
+    .then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: "EDIT_EXPENSE",
+        id,
+        update
+      });
+      return database.ref(`expenses/${id}`).once("value");
+    })
+    .then(snapshot => {
+      expect(snapshot.val().amount).toBe(update.amount);
+      done();
+    });
 });
 
 test("should setup add expense action object with provided value", () => {
@@ -122,7 +164,7 @@ test("should fetch the expenses from firebase", () => {
   store.dispatch(startSetExpenses()).then(() => {
     const actions = store.getActions();
     expect(actions[0]).toEqual({
-      type: "SET_EXPENSE",
+      type: "SET_EXPENSES",
       expenses
     });
     done();
