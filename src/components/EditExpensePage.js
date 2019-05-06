@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Popconfirm, message } from "antd";
+import "antd/dist/antd.css";
 import ExpenseForm from "./ExpenseForm";
 import { startEditExpense, startRemoveExpense } from "../actions/expenses";
 
@@ -8,10 +10,12 @@ export class EditExpensePage extends React.Component {
     this.props.startEditExpense(this.props.expense.id, expense);
     this.props.history.push("/");
   };
-  onClick = () => {
+
+  onConfirm = () => {
     this.props.startRemoveExpense({ id: this.props.expense.id });
     this.props.history.push("/");
   };
+
   render() {
     return (
       <div>
@@ -22,9 +26,15 @@ export class EditExpensePage extends React.Component {
         </div>
         <div className="content-container">
           <ExpenseForm expense={this.props.expense} onSubmit={this.onSubmit} />
-          <button className="button button--secondary" onClick={this.onClick}>
-            Remove Expense
-          </button>
+          <Popconfirm
+            title="You want to delete this expense?"
+            onConfirm={this.onConfirm}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
+          >
+            <button className="button button--secondary">Remove Expense</button>
+          </Popconfirm>
         </div>
       </div>
     );
