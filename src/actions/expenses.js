@@ -50,6 +50,23 @@ export const startRemoveExpense = ({ id } = {}) => {
   };
 };
 
+//REMOVE_ALL_EXPENSES
+export const removeAllExpense = () => ({
+  type: "REMOVE_ALL_EXPENSE"
+});
+
+export const startRemoveAllExpense = ({ id } = {}) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    return database
+      .ref(`users/${uid}/expenses`)
+      .remove()
+      .then(() => {
+        dispatch(removeAllExpense());
+      });
+  };
+};
+
 //EDIT_EXPENSE
 export const editExpense = (id, update) => ({
   type: "EDIT_EXPENSE",
