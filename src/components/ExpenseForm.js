@@ -1,6 +1,5 @@
 import React from "react";
 import moment from "moment";
-import { SingleDatePicker } from "react-dates";
 import { DatePicker } from "antd";
 import "antd/dist/antd.css";
 
