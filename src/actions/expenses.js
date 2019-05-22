@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import moment from "moment";
 import database from "../firebase/firebase";
 
 //ADD_EXPENSE
@@ -28,6 +29,30 @@ export const startAddExpense = (expenseData = {}) => {
             ...expense
           })
         );
+      });
+  };
+};
+
+// add Expense to firebase store
+export const startAddAllExpenseToStore = () => {
+  const date = new Date();
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  const eid = moment(lastDay).valueOf();
+
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    return database
+      .ref(`users/${uid}/expenses`)
+      .once("value")
+      .then(snapshot => {
+        const expenses = [];
+        snapshot.forEach(childSnapshot => {
+          expenses.push({
+            id: childSnapshot.key,
+            ...childSnapshot.val()
+          });
+        });
+        database.ref(`oldusers/${uid}/oldexpenses/${eid}`).set(expenses);
       });
   };
 };

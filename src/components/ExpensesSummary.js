@@ -7,17 +7,23 @@ import numeral from "numeral";
 import selectExpenses from "../selectors/expenses";
 import selectExpensesTotal from "../selectors/expenses-total";
 import { startRemoveAllExpense } from "../actions/expenses";
+import { startAddAllExpenseToStore } from "../actions/expenses";
 
 export const ExpensesSummary = ({
   expenseCount,
   expensesTotal,
-  startRemoveAllExpense
+  startRemoveAllExpense,
+  startAddAllExpenseToStore
 }) => {
   const expenseWord = expenseCount === 1 ? "expense" : "expenses";
   const formattedExpensesTotal = numeral(expensesTotal).format("$0,0.00");
 
   const onConfirm = () => {
     startRemoveAllExpense();
+  };
+
+  const onConfirmClone = () => {
+    startAddAllExpenseToStore();
   };
 
   return (
@@ -27,8 +33,8 @@ export const ExpensesSummary = ({
           Viewing <span>{expenseCount}</span> {expenseWord} totalling
           <span> {formattedExpensesTotal}</span>
         </h1>
-        <div className="page-header__actions">
-          <Link className="button" to="/create">
+        <div className="page-header__actions flex">
+          <Link className="button flex__button" to="/create">
             Add Expense
           </Link>
           <Popconfirm
@@ -38,9 +44,16 @@ export const ExpensesSummary = ({
             okText="Yes"
             cancelText="No"
           >
-            <button className="button" style={{ marginLeft: "10px" }}>
-              Clear Expense
-            </button>
+            <button className="button flex__button">Clear Expense</button>
+          </Popconfirm>
+          <Popconfirm
+            title="You want to delete all expense?"
+            onConfirm={onConfirmClone}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
+          >
+            <button className="button flex__button">Clone Expense</button>
           </Popconfirm>
         </div>
       </div>
@@ -57,7 +70,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  startRemoveAllExpense: () => dispatch(startRemoveAllExpense())
+  startRemoveAllExpense: () => dispatch(startRemoveAllExpense()),
+  startAddAllExpenseToStore: () => dispatch(startAddAllExpenseToStore())
 });
 
 export default connect(
