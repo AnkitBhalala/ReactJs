@@ -47,7 +47,7 @@ export const ExpensesSummary = ({
             <button className="button flex__button">Clear Expense</button>
           </Popconfirm>
           <Popconfirm
-            title="You want to delete all expense?"
+            title="You want to copy all expense?"
             onConfirm={onConfirmClone}
             onCancel={() => {}}
             okText="Yes"
