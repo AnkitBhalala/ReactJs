@@ -34,10 +34,10 @@ export const startAddExpense = (expenseData = {}) => {
 };
 
 // add Expense to firebase store
-export const startAddAllExpenseToStore = () => {
-  const date = new Date();
-  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  const eid = moment(lastDay).valueOf();
+export const startAddAllExpenseToStore = eomid => {
+  // const date = new Date();
+  // const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  // const eid = moment(lastDay).valueOf();
 
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
@@ -45,14 +45,11 @@ export const startAddAllExpenseToStore = () => {
       .ref(`users/${uid}/expenses`)
       .once("value")
       .then(snapshot => {
-        const expenses = [];
         snapshot.forEach(childSnapshot => {
-          expenses.push({
-            id: childSnapshot.key,
-            ...childSnapshot.val()
-          });
+          database
+            .ref(`oldusers/${uid}/oldexpenses/${eomid}/${childSnapshot.key}`)
+            .set(childSnapshot.val());
         });
-        database.ref(`oldusers/${uid}/oldexpenses/${eid}`).set(expenses);
       });
   };
 };
@@ -80,7 +77,7 @@ export const removeAllExpense = () => ({
   type: "REMOVE_ALL_EXPENSE"
 });
 
-export const startRemoveAllExpense = ({ id } = {}) => {
+export const startRemoveAllExpense = () => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database
