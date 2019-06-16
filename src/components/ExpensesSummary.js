@@ -20,8 +20,8 @@ export class ExpensesSummary extends React.Component {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const dateString = `${year}-${month}-1`;
-    const emoid = moment(dateString).valueOf();
-    this.setState(() => ({ emoid }));
+    const eomid = moment(dateString).valueOf();
+    this.setState(() => ({ eomid }));
   }
 
   onConfirm = () => {
@@ -47,8 +47,12 @@ export class ExpensesSummary extends React.Component {
   };
 
   onChange = (date, dateString) => {
-    const eomid = moment(`${dateString}-1`).valueOf();
-    this.setState(() => ({ eomid }));
+    if (dateString) {
+      const eomid = moment(`${dateString}-1`).valueOf();
+      this.setState(() => ({ eomid }));
+    } else {
+      this.componentDidMount();
+    }
   };
 
   render() {
