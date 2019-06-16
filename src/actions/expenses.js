@@ -42,14 +42,21 @@ export const startAddAllExpenseToStore = eomid => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database
-      .ref(`users/${uid}/expenses`)
-      .once("value")
-      .then(snapshot => {
-        snapshot.forEach(childSnapshot => {
-          database
-            .ref(`oldusers/${uid}/oldexpenses/${eomid}/${childSnapshot.key}`)
-            .set(childSnapshot.val());
-        });
+      .ref(`oldusers/${uid}/oldexpenses/${eomid}`)
+      .remove()
+      .then(() => {
+        return database
+          .ref(`users/${uid}/expenses`)
+          .once("value")
+          .then(snapshot => {
+            snapshot.forEach(childSnapshot => {
+              database
+                .ref(
+                  `oldusers/${uid}/oldexpenses/${eomid}/${childSnapshot.key}`
+                )
+                .set(childSnapshot.val());
+            });
+          });
       });
   };
 };

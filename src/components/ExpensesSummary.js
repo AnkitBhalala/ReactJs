@@ -15,6 +15,15 @@ export class ExpensesSummary extends React.Component {
     eomid: ""
   };
 
+  componentDidMount() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const dateString = `${year}-${month}-1`;
+    const emoid = moment(dateString).valueOf();
+    this.setState(() => ({ emoid }));
+  }
+
   onConfirm = () => {
     this.props
       .startRemoveAllExpense()
