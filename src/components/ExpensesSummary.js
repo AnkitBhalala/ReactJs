@@ -10,6 +10,19 @@ import selectExpensesTotal from "../selectors/expenses-total";
 import { startRemoveAllExpense } from "../actions/expenses";
 import { startAddAllExpenseToStore } from "../actions/expenses";
 
+numeral.register("locale", "in", {
+  delimiters: {
+    thousands: ",",
+    decimal: "."
+  },
+  currency: {
+    symbol: "₹"
+  }
+});
+
+// switch between locales
+numeral.locale("in");
+
 export class ExpensesSummary extends React.Component {
   state = {
     eomid: ""
@@ -58,7 +71,8 @@ export class ExpensesSummary extends React.Component {
   render() {
     const { expenseCount, expensesTotal } = this.props;
     const expenseWord = expenseCount === 1 ? "expense" : "expenses";
-    const formattedExpensesTotal = numeral(expensesTotal).format("$0,0.00");
+    const formattedExpensesTotal = numeral(expensesTotal).format("0,0.00");
+
     return (
       <div className="page-header">
         <div className="content-container">
