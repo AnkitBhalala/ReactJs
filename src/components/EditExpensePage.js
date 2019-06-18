@@ -7,12 +7,20 @@ import { startEditExpense, startRemoveExpense } from "../actions/expenses";
 
 export class EditExpensePage extends React.Component {
   onSubmit = expense => {
-    this.props.startEditExpense(this.props.expense.id, expense);
+    const sid = this.props.sid;
+    this.props
+      .startEditExpense(this.props.expense.id, expense, sid)
+      .then(() => message.success("Edit expense sucessfully"))
+      .catch(error => message.error("error"));
     this.props.history.push("/");
   };
 
   onConfirm = () => {
-    this.props.startRemoveExpense({ id: this.props.expense.id });
+    const sid = this.props.sid;
+    this.props
+      .startRemoveExpense({ id: this.props.expense.id, sid })
+      .then(() => message.success("remove expense successfully"))
+      .catch(error => message.error("error"));
     this.props.history.push("/");
   };
 
@@ -42,7 +50,8 @@ export class EditExpensePage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startEditExpense: (id, expense) => dispatch(startEditExpense(id, expense)),
+  startEditExpense: (id, expense, sid) =>
+    dispatch(startEditExpense(id, expense, sid)),
   startRemoveExpense: data => dispatch(startRemoveExpense(data))
 });
 
@@ -50,7 +59,8 @@ const mapStateToProps = (state, props) => {
   return {
     expense: state.expenses.find(
       expense => expense.id === props.location.search.substring(4)
-    )
+    ),
+    sid: state.filters.sid
   };
 };
 

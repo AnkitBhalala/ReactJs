@@ -8,7 +8,7 @@ export const addExpense = expense => ({
   expense
 });
 
-export const startAddExpense = (expenseData = {}) => {
+export const startAddExpense = (expenseData = {}, sid) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     const {
@@ -20,7 +20,7 @@ export const startAddExpense = (expenseData = {}) => {
     const expense = { description, note, amount, createdAt };
 
     return database
-      .ref(`users/${uid}/expenses`)
+      .ref(`users/${uid}/expenses/${sid}`)
       .push(expense)
       .then(ref => {
         dispatch(
@@ -46,7 +46,7 @@ export const startAddAllExpenseToStore = eomid => {
       .remove()
       .then(() => {
         return database
-          .ref(`users/${uid}/expenses`)
+          .ref(`users/${uid}/expenses/${eomid}`)
           .once("value")
           .then(snapshot => {
             snapshot.forEach(childSnapshot => {
@@ -67,11 +67,11 @@ export const removeExpense = ({ id } = {}) => ({
   id
 });
 
-export const startRemoveExpense = ({ id } = {}) => {
+export const startRemoveExpense = ({ id, sid } = {}) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database
-      .ref(`users/${uid}/expenses/${id}`)
+      .ref(`users/${uid}/expenses/${sid}/${id}`)
       .remove()
       .then(() => {
         dispatch(removeExpense({ id }));
@@ -103,11 +103,11 @@ export const editExpense = (id, update) => ({
   update
 });
 
-export const startEditExpense = (id, update) => {
+export const startEditExpense = (id, update, sid) => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database
-      .ref(`users/${uid}/expenses/${id}`)
+      .ref(`users/${uid}/expenses/${sid}/${id}`)
       .update(update)
       .then(() => {
         dispatch(editExpense(id, update));
@@ -121,11 +121,11 @@ export const setExpenses = expenses => ({
   expenses
 });
 
-export const startSetExpenses = () => {
+export const startSetExpenses = sid => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database
-      .ref(`users/${uid}/expenses`)
+      .ref(`users/${uid}/expenses/${sid}`)
       .once("value")
       .then(snapshot => {
         const expenses = [];

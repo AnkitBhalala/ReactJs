@@ -2,11 +2,16 @@ import React from "react";
 import ExpenseForm from "./ExpenseForm";
 import { connect } from "react-redux";
 import { startAddExpense } from "../actions/expenses";
+import { message } from "antd";
 
 export class AddExpensePage extends React.Component {
   onSubmit = expense => {
     // props.dispatch(addExpense(expense));
-    this.props.startAddExpense(expense);
+    const sid = this.props.sid;
+    this.props
+      .startAddExpense(expense, sid)
+      .then(() => message.success("Add expense successfully"))
+      .catch(error => message.error("error"));
     this.props.history.push("/");
   };
   render() {
@@ -26,10 +31,16 @@ export class AddExpensePage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startAddExpense: expense => dispatch(startAddExpense(expense))
+  startAddExpense: (expense, sid) => dispatch(startAddExpense(expense, sid))
 });
 
+const mapstateToprops = state => {
+  return {
+    sid: state.filters.sid
+  };
+};
+
 export default connect(
-  undefined,
+  mapstateToprops,
   mapDispatchToProps
 )(AddExpensePage);

@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import moment from "moment";
 import AppRouter, { history } from "./routers/AppRouter";
 import configureStore from "./store/configureStore";
 import { startSetExpenses } from "./actions/expenses";
@@ -30,8 +31,13 @@ ReactDOM.render(<LoadingPage />, document.getElementById("app"));
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const dateString = `${year}-${month}-1`;
+    const sid = moment(dateString).valueOf();
     store.dispatch(login(user.uid));
-    store.dispatch(startSetExpenses()).then(() => {
+    store.dispatch(startSetExpenses(sid)).then(() => {
       renderApp();
       if (history.location.pathname === "/") {
         history.push("/dashboard");

@@ -1,14 +1,18 @@
 import moment from "moment";
 
 // Filter Reducer
+const date = new Date();
+const year = date.getFullYear();
+const month = date.getMonth() + 1;
+const dateString = `${year}-${month}-1`;
+const sid = moment(dateString).valueOf();
 
 const filterReducerDefaultState = {
   text: "",
   sortBy: "date",
   startDate: undefined,
-  endDate: undefined
-  // startDate: moment().startOf("month"),
-  // endDate: moment().endOf("month")
+  endDate: undefined,
+  sid: sid
 };
 
 export default (state = filterReducerDefaultState, action) => {
@@ -37,6 +41,11 @@ export default (state = filterReducerDefaultState, action) => {
       return {
         ...state,
         sortBy: "amount"
+      };
+    case "SET_SID":
+      return {
+        ...state,
+        sid: action.sid
       };
     default:
       return state;

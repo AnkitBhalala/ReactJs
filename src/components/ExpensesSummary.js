@@ -8,7 +8,11 @@ import numeral from "numeral";
 import selectExpenses from "../selectors/expenses";
 import selectExpensesTotal from "../selectors/expenses-total";
 import { startRemoveAllExpense } from "../actions/expenses";
-import { startAddAllExpenseToStore } from "../actions/expenses";
+import { setSid } from "../actions/filters";
+import {
+  startAddAllExpenseToStore,
+  startSetExpenses
+} from "../actions/expenses";
 
 numeral.register("locale", "in", {
   delimiters: {
@@ -40,23 +44,15 @@ export class ExpensesSummary extends React.Component {
   onConfirm = () => {
     this.props
       .startRemoveAllExpense()
-      .then(() => {
-        message.success("dashbord clear");
-      })
-      .catch(() => {
-        message.error("error");
-      });
+      .then(() => message.success("dashbord clear"))
+      .catch(() => message.error("error"));
   };
 
   onConfirmClone = () => {
     this.props
       .startAddAllExpenseToStore(this.state.eomid)
-      .then(() => {
-        message.success("expense store to database");
-      })
-      .catch(error => {
-        message.error("error");
-      });
+      .then(() => message.success("expense store to database"))
+      .catch(error => message.error("error"));
   };
 
   onChange = (date, dateString) => {
@@ -65,6 +61,17 @@ export class ExpensesSummary extends React.Component {
       this.setState(() => ({ eomid }));
     } else {
       this.componentDidMount();
+    }
+  };
+
+  onChangeSetData = (date, dateString) => {
+    if (dateString) {
+      const sid = moment(`${dateString}-1`).valueOf();
+      this.props.setSid(sid);
+      this.props
+        .startSetExpenses(sid)
+        .then(() => message.success("new expense set"))
+        .catch(error => message.error("error"));
     }
   };
 
@@ -103,12 +110,20 @@ export class ExpensesSummary extends React.Component {
               <button className="button flex__button">Clone Expense</button>
             </Popconfirm>
             <DatePicker.MonthPicker
+              value={moment(this.state.eomid)}
               className="flex__button"
               onChange={this.onChange}
               placeholder="Select month"
               size={"large"}
             />
           </div>
+          <DatePicker.MonthPicker
+            value={moment(this.props.sid)}
+            className="flex__button"
+            onChange={this.onChangeSetData}
+            placeholder="Select month"
+            size={"large"}
+          />
         </div>
       </div>
     );
@@ -119,13 +134,17 @@ const mapStateToProps = state => {
   const visibleExpenses = selectExpenses(state.expenses, state.filters);
   return {
     expenseCount: visibleExpenses.length,
-    expensesTotal: selectExpensesTotal(visibleExpenses)
+    expensesTotal: selectExpensesTotal(visibleExpenses),
+    sid: state.filters.sid
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   startRemoveAllExpense: () => dispatch(startRemoveAllExpense()),
-  startAddAllExpenseToStore: eomid => dispatch(startAddAllExpenseToStore(eomid))
+  startAddAllExpenseToStore: eomid =>
+    dispatch(startAddAllExpenseToStore(eomid)),
+  startSetExpenses: sid => dispatch(startSetExpenses(sid)),
+  setSid: sid => dispatch(setSid(sid))
 });
 
 export default connect(
