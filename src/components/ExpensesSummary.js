@@ -113,7 +113,6 @@ export class ExpensesSummary extends React.Component {
               value={moment(this.state.eomid)}
               className="flex__button"
               onChange={this.onChange}
-              placeholder="Select month"
               size={"large"}
             />
           </div>
@@ -121,7 +120,6 @@ export class ExpensesSummary extends React.Component {
             value={moment(this.props.sid)}
             className="flex__button"
             onChange={this.onChangeSetData}
-            placeholder="Select month"
             size={"large"}
           />
         </div>
