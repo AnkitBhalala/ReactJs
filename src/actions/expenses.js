@@ -1,5 +1,3 @@
-import uuid from "uuid";
-import moment from "moment";
 import database from "../firebase/firebase";
 
 //ADD_EXPENSE
@@ -35,10 +33,6 @@ export const startAddExpense = (expenseData = {}, sid) => {
 
 // add Expense to firebase store
 export const startAddAllExpenseToStore = eomid => {
-  // const date = new Date();
-  // const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  // const eid = moment(lastDay).valueOf();
-
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database

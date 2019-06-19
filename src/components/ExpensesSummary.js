@@ -33,10 +33,10 @@ export class ExpensesSummary extends React.Component {
   };
 
   componentDidMount() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const dateString = `${year}-${month}-1`;
+    const dateString = moment()
+      .toISOString()
+      .slice(0, 7)
+      .concat("-01");
     const eomid = moment(dateString).valueOf();
     this.setState(() => ({ eomid }));
   }
@@ -57,7 +57,7 @@ export class ExpensesSummary extends React.Component {
 
   onChange = (date, dateString) => {
     if (dateString) {
-      const eomid = moment(`${dateString}-1`).valueOf();
+      const eomid = moment(`${dateString}-01`).valueOf();
       this.setState(() => ({ eomid }));
     } else {
       this.componentDidMount();
@@ -66,7 +66,7 @@ export class ExpensesSummary extends React.Component {
 
   onChangeSetData = (date, dateString) => {
     if (dateString) {
-      const sid = moment(`${dateString}-1`).valueOf();
+      const sid = moment(`${dateString}-01`).valueOf();
       this.props.setSid(sid);
       this.props
         .startSetExpenses(sid)

@@ -31,10 +31,10 @@ ReactDOM.render(<LoadingPage />, document.getElementById("app"));
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const dateString = `${year}-${month}-1`;
+    const dateString = moment()
+      .toISOString()
+      .slice(0, 7)
+      .concat("-01");
     const sid = moment(dateString).valueOf();
     store.dispatch(login(user.uid));
     store.dispatch(startSetExpenses(sid)).then(() => {
