@@ -42,8 +42,9 @@ export class ExpensesSummary extends React.Component {
   }
 
   onConfirm = () => {
+    const sid = this.props.sid;
     this.props
-      .startRemoveAllExpense()
+      .startRemoveAllExpense(sid)
       .then(() => message.success("dashbord clear"))
       .catch(() => message.error("error"));
   };
@@ -138,7 +139,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  startRemoveAllExpense: () => dispatch(startRemoveAllExpense()),
+  startRemoveAllExpense: sid => dispatch(startRemoveAllExpense(sid)),
   startAddAllExpenseToStore: eomid =>
     dispatch(startAddAllExpenseToStore(eomid)),
   startSetExpenses: sid => dispatch(startSetExpenses(sid)),

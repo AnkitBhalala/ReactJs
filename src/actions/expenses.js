@@ -78,11 +78,11 @@ export const removeAllExpense = () => ({
   type: "REMOVE_ALL_EXPENSE"
 });
 
-export const startRemoveAllExpense = () => {
+export const startRemoveAllExpense = sid => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     return database
-      .ref(`users/${uid}/expenses`)
+      .ref(`users/${uid}/expenses/${sid}`)
       .remove()
       .then(() => {
         dispatch(removeAllExpense());
