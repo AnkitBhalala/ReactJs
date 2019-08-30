@@ -92,7 +92,7 @@ export class ExpensesSummary extends React.Component {
             <Link className="button flex__button" to="/create">
               Add Expense
             </Link>
-            <Popconfirm
+            {/* <Popconfirm
               title="You want to delete all expense?"
               onConfirm={this.onConfirm}
               onCancel={() => {}}
@@ -109,20 +109,20 @@ export class ExpensesSummary extends React.Component {
               cancelText="No"
             >
               <button className="button flex__button">Clone Expense</button>
-            </Popconfirm>
+            </Popconfirm> }
             <DatePicker.MonthPicker
               value={moment(this.state.eomid)}
               className="flex__button"
               onChange={this.onChange}
               size={"large"}
+            /> */}
+            <DatePicker.MonthPicker
+              value={moment(this.props.sid)}
+              className="flex__button"
+              onChange={this.onChangeSetData}
+              size={"large"}
             />
           </div>
-          <DatePicker.MonthPicker
-            value={moment(this.props.sid)}
-            className="flex__button"
-            onChange={this.onChangeSetData}
-            size={"large"}
-          />
         </div>
       </div>
     );
