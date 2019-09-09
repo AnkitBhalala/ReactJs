@@ -12,7 +12,8 @@ const filterReducerDefaultState = {
   sortBy: "date",
   startDate: undefined,
   endDate: undefined,
-  sid: sid
+  sid: sid,
+  hideExpenseID: []
 };
 
 export default (state = filterReducerDefaultState, action) => {
@@ -46,6 +47,18 @@ export default (state = filterReducerDefaultState, action) => {
       return {
         ...state,
         sid: action.sid
+      };
+    case "HIDE_EXPENSE":
+      return {
+        ...state,
+        hideExpenseID: [...state.hideExpenseID, action.id]
+      };
+    case "SHOW_EXPENSE":
+      return {
+        ...state,
+        hideExpenseID: state.hideExpenseID.filter(
+          ExpenseID => ExpenseID !== action.id
+        )
       };
     default:
       return state;

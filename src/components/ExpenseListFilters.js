@@ -35,6 +35,11 @@ export class ExpenseListFilters extends React.Component {
       <div className="content-container">
         <div className="input-group">
           <div className="input-group__item">
+            {this.props.filters.hideExpenseID.length > 0 && (
+              <p style={{ color: "green" }}>
+                Some Expenses is hide refresh to show them
+              </p>
+            )}
             <input
               className="text-input"
               type="text"

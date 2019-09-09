@@ -30,3 +30,13 @@ export const setSid = sid => ({
   type: "SET_SID",
   sid
 });
+
+export const hideExpense = id => ({
+  type: "HIDE_EXPENSE",
+  id
+});
+
+export const showExpense = id => ({
+  type: "SHOW_EXPENSE",
+  id
+});

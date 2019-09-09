@@ -1,42 +1,65 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import numeral from "numeral";
-
 import { Icon } from "antd";
 
-// let color = "";
-// const hideExpense = event => {
-//   event.preventDefault();
-//   color = color ? "" : "green";
-//   console.log(color);
-// };
+import { hideExpense, showExpense } from "../actions/filters";
 
-const ExpenseListItem = ({ id, description, amount, createdAt }) => {
-  // console.log("hear");
-  // const [name, setName] = useState("DeeDee");
-  // console.log(name);
+const ExpenseListItem = ({
+  id,
+  description,
+  amount,
+  createdAt,
+  hideExpense,
+  showExpense
+}) => {
+  let [color, setColor] = useState();
+
+  const showHideExpense = event => {
+    event.preventDefault();
+    color = color ? "" : "green";
+    setColor(color);
+    color ? hideExpense(id) : show  Expense(id);
+  };
+
   return (
     <Link className="list-item" to={`/edit?id=${id}`}>
-      <div>
-        <h3 className="list-item__title">{description}</h3>
-        <span className="list-item__sub-title">
-          {moment(createdAt).format("Do MMMM, YYYY")}
-        </span>
-      </div>
-      <div>
-        <span className="list-item__data">
-          {numeral(amount).format("$0,0.00")}
-        </span>
-        {/*<Icon
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}
+      >
+        <div>
+          <h3 className="list-item__title">{description}</h3>
+          <span className="list-item__sub-title">
+            {moment(createdAt).format("Do MMMM, YYYY")}
+          </span>
+          <h3 className="list-item__data">
+            {numeral(amount).format("$0,0.00")}
+          </h3>
+        </div>
+        <Icon
           type="minus-circle"
-          style={{ marginLeft: 10, color: color }}
-          onClick={hideExpense}
+          style={{ marginLeft: 10, color: color, fontSize: 25 }}
+          onClick={showHideExpense}
         />
-        */}
       </div>
     </Link>
   );
 };
 
-export default ExpenseListItem;
+const mapStateToProps = state => {};
+
+const mapDispatchToProps = dispatch => ({
+  hideExpense: id => dispatch(hideExpense(id)),
+  showExpense: id => dispatch(showExpense(id))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ExpenseListItem);
