@@ -21,7 +21,7 @@ const ExpenseListItem = ({
     event.preventDefault();
     color = color ? "" : "green";
     setColor(color);
-    color ? hideExpense(id) : show  Expense(id);
+    color ? hideExpense(id) : showExpense(id);
   };
 
   return (
