@@ -40,3 +40,18 @@ export const showExpense = id => ({
   type: "SHOW_EXPENSE",
   id
 });
+
+//SORT_BY_All
+export const filterByAll = () => ({
+  type: "FILTER_BY_ALL"
+});
+
+//SORT_BY_REGULAR_EXPENSE
+export const filterByRegular = () => ({
+  type: "FILTER_BY_REGULAR"
+});
+
+//SORT_BY_ONE_TIME_EXPENSE
+export const filterByOneTime = () => ({
+  type: "FILTER_BY_ONE_TIME"
+});

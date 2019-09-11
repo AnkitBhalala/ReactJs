@@ -6,8 +6,7 @@ import { message } from "antd";
 
 export class AddExpensePage extends React.Component {
   onSubmit = expense => {
-    // props.dispatch(addExpense(expense));
-    const sid = this.props.sid;
+    const { sid } = this.props;
     this.props
       .startAddExpense(expense, sid)
       .then(() => message.success("Add expense successfully"))

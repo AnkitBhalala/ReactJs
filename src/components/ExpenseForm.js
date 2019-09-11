@@ -1,8 +1,9 @@
 import React from "react";
 import moment from "moment";
-import { DatePicker } from "antd";
+import { DatePicker, Select } from "antd";
 import "antd/dist/antd.css";
 
+const { Option } = Select;
 export default class ExpenseForm extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +12,7 @@ export default class ExpenseForm extends React.Component {
       note: props.expense ? props.expense.note : "",
       amount: props.expense ? props.expense.amount.toString() : "",
       createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
-      calendarFocused: false,
+      expenseFilter: props.expense ? props.expense.expenseFilter : "regular",
       error: ""
     };
   }
@@ -35,6 +36,11 @@ export default class ExpenseForm extends React.Component {
       this.setState(() => ({ createdAt: date }));
     }
   };
+
+  handleChange = expenseFilter => {
+    this.setState(() => ({ expenseFilter }));
+  };
+
   onSubmit = event => {
     event.preventDefault();
 
@@ -46,11 +52,13 @@ export default class ExpenseForm extends React.Component {
         description: this.state.description,
         amount: parseFloat(this.state.amount, 10),
         createdAt: this.state.createdAt.valueOf(),
+        expenseFilter: this.state.expenseFilter,
         note: this.state.note
       });
     }
   };
   render() {
+    const { expenseFilter } = this.state;
     return (
       <form className="form" onSubmit={this.onSubmit}>
         {this.state.error && <p className="form__error">{this.state.error}</p>}
@@ -74,6 +82,14 @@ export default class ExpenseForm extends React.Component {
           value={this.state.createdAt}
           onChange={this.onDateChange}
         />
+        <Select
+          defaultValue={expenseFilter}
+          onChange={this.handleChange}
+          size="large"
+        >
+          <Option value="oneTime">One Time</Option>
+          <Option value="regular">Regular</Option>
+        </Select>
         <textarea
           className="text-area"
           placeholder="Add a note for your expense (optional)"

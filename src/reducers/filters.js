@@ -13,7 +13,8 @@ const filterReducerDefaultState = {
   startDate: undefined,
   endDate: undefined,
   sid: sid,
-  hideExpenseID: []
+  hideExpenseID: [],
+  filterBy: "all"
 };
 
 export default (state = filterReducerDefaultState, action) => {
@@ -42,6 +43,21 @@ export default (state = filterReducerDefaultState, action) => {
       return {
         ...state,
         sortBy: "amount"
+      };
+    case "FILTER_BY_ALL":
+      return {
+        ...state,
+        filterBy: "all"
+      };
+    case "FILTER_BY_REGULAR":
+      return {
+        ...state,
+        filterBy: "regular"
+      };
+    case "FILTER_BY_ONE_TIME":
+      return {
+        ...state,
+        filterBy: "oneTime"
       };
     case "SET_SID":
       return {

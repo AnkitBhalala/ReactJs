@@ -7,7 +7,10 @@ import {
   sortByDate,
   sortByAmount,
   setStartDate,
-  setEndDate
+  setEndDate,
+  filterByRegular,
+  filterByOneTime,
+  filterByAll
 } from "../actions/filters";
 
 const { RangePicker } = DatePicker;
@@ -27,6 +30,16 @@ export class ExpenseListFilters extends React.Component {
       this.props.sortByDate();
     } else if (event.target.value === "amount") {
       this.props.sortByAmount();
+    }
+  };
+
+  onFilterChange = event => {
+    if (event.target.value === "all") {
+      this.props.filterByAll();
+    } else if (event.target.value === "regular") {
+      this.props.filterByRegular();
+    } else if (event.target.value === "oneTime") {
+      this.props.filterByOneTime();
     }
   };
 
@@ -57,6 +70,16 @@ export class ExpenseListFilters extends React.Component {
               <option value="date">Date</option>
               <option value="amount">Amount</option>
             </select>
+            <select
+              className="select"
+              value={this.props.filters.filterBy}
+              onChange={this.onFilterChange}
+              style={{ marginLeft: 23 }}
+            >
+              <option value="all">All</option>
+              <option value="regular">Regular</option>
+              <option value="oneTime">One Time</option>
+            </select>
           </div>
           <div>
             <RangePicker
@@ -83,7 +106,10 @@ const mapDispatchToProps = dispatch => {
     sortByDate: () => dispatch(sortByDate()),
     sortByAmount: () => dispatch(sortByAmount()),
     setStartDate: startDate => dispatch(setStartDate(startDate)),
-    setEndDate: endDate => dispatch(setEndDate(endDate))
+    setEndDate: endDate => dispatch(setEndDate(endDate)),
+    filterByAll: () => dispatch(filterByAll()),
+    filterByRegular: () => dispatch(filterByRegular()),
+    filterByOneTime: () => dispatch(filterByOneTime())
   };
 };
 

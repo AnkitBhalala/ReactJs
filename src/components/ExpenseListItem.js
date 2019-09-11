@@ -52,7 +52,7 @@ const ExpenseListItem = ({
   );
 };
 
-const mapStateToProps = state => {};
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
   hideExpense: id => dispatch(hideExpense(id)),

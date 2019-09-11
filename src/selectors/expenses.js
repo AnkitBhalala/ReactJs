@@ -3,7 +3,7 @@ import moment from "moment";
 //Get visible expenses
 export default (
   expenses,
-  { text, sortBy, startDate, endDate, hideExpenseID }
+  { text, sortBy, startDate, endDate, hideExpenseID, filterBy }
 ) => {
   return expenses
     .filter(expense => {
@@ -19,7 +19,19 @@ export default (
         .includes(text.toLowerCase());
       const index = hideExpenseID.indexOf(expense.id);
       const hideExpense = index < 0 ? true : false;
-      return startDateMatch && endDateMatch && textMatch && hideExpense;
+      let expenseFilter;
+      if (filterBy === "all") {
+        expenseFilter = true;
+      } else {
+        expenseFilter = expense.expenseFilter === filterBy;
+      }
+      return (
+        startDateMatch &&
+        endDateMatch &&
+        textMatch &&
+        hideExpense &&
+        expenseFilter
+      );
     })
     .sort((a, b) => {
       if (sortBy === "date") {
