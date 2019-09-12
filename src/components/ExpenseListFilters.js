@@ -46,13 +46,13 @@ export class ExpenseListFilters extends React.Component {
   render() {
     return (
       <div className="content-container">
+        {this.props.filters.hideExpenseID.length > 0 && (
+          <p style={{ color: "green" }}>
+            Some Expenses is hide refresh to show them
+          </p>
+        )}
         <div className="input-group">
           <div className="input-group__item">
-            {this.props.filters.hideExpenseID.length > 0 && (
-              <p style={{ color: "green" }}>
-                Some Expenses is hide refresh to show them
-              </p>
-            )}
             <input
               className="text-input"
               type="text"
@@ -74,7 +74,7 @@ export class ExpenseListFilters extends React.Component {
               className="select"
               value={this.props.filters.filterBy}
               onChange={this.onFilterChange}
-              style={{ marginLeft: 23 }}
+              style={{ marginLeft: 12 }}
             >
               <option value="all">All</option>
               <option value="regular">Regular</option>

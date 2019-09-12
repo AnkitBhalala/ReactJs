@@ -9,23 +9,18 @@
 
 .list-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   border: 1px solid darken($off-white, 7%);
   border-top: none;
   color: $dark-gray;
   padding: $s-size;
   text-decoration: none;
   transition: background 0.3s ease;
+  justify-content: space-between;
+  align-items: center;
 
   &:hover {
     background: $off-white;
-  }
-
-  @media (min-width: $desktop-breakpoint) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: $m-size;
   }
 }
 
@@ -44,7 +39,6 @@
 
   @media (min-width: $desktop-breakpoint) {
     margin: 0;
-    padding-left: $s-size;
   }
 }
 

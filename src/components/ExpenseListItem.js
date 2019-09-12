@@ -26,13 +26,7 @@ const ExpenseListItem = ({
 
   return (
     <Link className="list-item" to={`/edit?id=${id}`}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center"
-        }}
-      >
+      <div>
         <div>
           <h3 className="list-item__title">{description}</h3>
           <span className="list-item__sub-title">
@@ -42,6 +36,8 @@ const ExpenseListItem = ({
             {numeral(amount).format("$0,0.00")}
           </h3>
         </div>
+      </div>
+      <div>
         <Icon
           type="minus-circle"
           style={{ marginLeft: 10, color: color, fontSize: 25 }}
